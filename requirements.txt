@@ -1,3 +1,17 @@
 pandas
 odfpy
 datasets
+
+# from https://github.com/danielbeach/fine-tune-openLLaMA/blob/main/requirements.txt
+bs4
+torch
+transformers
+langchain
+accelerate
+bitsandbytes
+datasets
+peft
+loralib
+sentencepiece
+scipy
+tensorboardX
