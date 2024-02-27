@@ -1,0 +1,20 @@
+{
+  "citation": "",
+  "description": "",
+  "features": {
+    "\u6f22\u5b57": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "\u7f85\u99ac\u5b57": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "\u83ef\u8a9e": {
+      "dtype": "string",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": ""
+}
