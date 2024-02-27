@@ -1,4 +1,6 @@
+import torch
 from datasets import load_from_disk
+from transformers import BitsAndBytesConfig, LlamaForCausalLM, LlamaTokenizer
 
 
 def as_chat(data):
@@ -16,11 +18,32 @@ def as_chat(data):
 
 def main():
     train_dataset = load_from_disk('dataset/train')
+    # converted = train_dataset.map(as_chat)
+    # for batch in converted:
+    #     print(batch['chat'])
 
-    converted = train_dataset.map(as_chat)
+    model_name = "open_llama_7b"
+    base_model = "open_llama_7b"
+    base_model = "openlm-research/open_llama_7b"
+    target_modules = ["q_proj", "k_proj", "v_proj"]
+    trainer_output_dir = "fine-tune-results/"
+    model_output_dir = "models/"
+    instruct = False
 
-    for batch in converted:
-        print(batch['chat'])
+    bnb_config = BitsAndBytesConfig(
+        load_in_4bit=True,
+        bnb_4bit_use_double_quant=True,
+        bnb_4bit_quant_type="nf4",
+        bnb_4bit_compute_dtype=torch.bfloat16
+    )
+
+    tokenizer = LlamaTokenizer.from_pretrained(base_model)
+    model = LlamaForCausalLM.from_pretrained(base_model,
+                                             quantization_config=bnb_config,
+                                             device_map={"": 0})
+
+    if not tokenizer.pad_token:
+        tokenizer.add_special_tokens({'pad_token': '[PAD]'})
 
 
 if __name__ == '__main__':
