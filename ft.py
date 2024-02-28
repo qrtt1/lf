@@ -75,7 +75,7 @@ def main():
             per_device_train_batch_size=1,
             gradient_accumulation_steps=4,
             warmup_steps=100,
-            num_train_epochs=1,  # full run
+            num_train_epochs=0.5,  # full run
             learning_rate=2e-4,
             fp16=True,
             logging_steps=20,
@@ -93,7 +93,7 @@ def main():
     base_model = LlamaForCausalLM.from_pretrained(base_model, device_map="cpu")
     model = PeftModel.from_pretrained(base_model, model_save_path)
     merged_model = model.merge_and_unload()
-    model_save_path = f"model_output_dir/{model_name}"
+    model_save_path = f"{model_output_dir}/{model_name}"
     tokenizer.save_pretrained(model_save_path)
     merged_model.save_pretrained(model_save_path)
 
