@@ -1,5 +1,6 @@
 import torch
 from datasets import load_from_disk
+from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from transformers import BitsAndBytesConfig, LlamaForCausalLM, LlamaTokenizer
 
 
@@ -45,6 +46,40 @@ def main():
     if not tokenizer.pad_token:
         tokenizer.add_special_tokens({'pad_token': '[PAD]'})
 
+    model.gradient_checkpointing_enable()
+    model = prepare_model_for_kbit_training(model)
+
+    config = LoraConfig(
+        r=8,
+        lora_alpha=32,
+        target_modules=target_modules,
+        lora_dropout=0.05,
+        bias="none",
+        task_type="CAUSAL_LM"
+    )
+    model = get_peft_model(model, config)
+
+    # Load dataset and prepare data
+    context_window = 2048
+    # data = data.map(lambda data_point: tokenizer(
+    #         transform_data(
+    #             data_point["conversations"],
+    #             tokenizer.eos_token,
+    #             instruct=instruct
+    #             ),
+    #         max_length=context_window,
+    #         truncation=True,
+    #     ))
+
+
+def main2():
+    base_model = "openlm-research/open_llama_7b"
+    tokenizer = LlamaTokenizer.from_pretrained(base_model)
+    print(tokenizer.eos_token)
+
+    print(tokenizer("變成 otken?"))
+    pass
+
 
 if __name__ == '__main__':
-    main()
+    main2()
