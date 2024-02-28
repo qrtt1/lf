@@ -16,7 +16,7 @@ def as_chat(data):
 "{data['漢字']}"
 "{data['羅馬字']}"
     """
-    return dict(chat=message.strip())
+    return message.strip()
 
 
 def main():
