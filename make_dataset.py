@@ -7,7 +7,7 @@ def main():
     df = df.loc[:, ['漢字', '羅馬字', '華語']]
 
     dataset = Dataset.from_pandas(df)
-    train_test_split = dataset.train_test_split(test_size=0.2)
+    train_test_split = dataset.train_test_split(test_size=0.8)
 
     train_dataset = train_test_split['train']
     train_dataset.save_to_disk('dataset/train')
