@@ -72,14 +72,5 @@ def main():
     #     ))
 
 
-def main2():
-    base_model = "openlm-research/open_llama_7b"
-    tokenizer = LlamaTokenizer.from_pretrained(base_model)
-    print(tokenizer.eos_token)
-
-    print(tokenizer("變成 otken?"))
-    pass
-
-
 if __name__ == '__main__':
-    main2()
+    main()
